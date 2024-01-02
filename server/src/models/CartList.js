@@ -12,10 +12,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "uid",
         as: "cart",
       });
-      CartList.belongsTo(models.SanPham, {
-        foreignKey: "maSP",
-        as: "Carts",
-      });
     }
   }
   CartList.init(

@@ -1,7 +1,7 @@
 import React from 'react'
 import SliderComponent from '../../components/SliderComponent/SliderComponent'
 import TypeProduct from '../../components/TypeProduct/TypeProduct'
-import { WrapperButtonMore, WrapperProducts, WrapperTypeProduct } from './style'
+import { WrapperButtonMore, WrapperProducts, WrapperTypeProduct, WrapperType } from './style'
 import slider1 from '../../accets/images/slider1.webp'
 import slider2 from '../../accets/images/slider2.webp'
 import slider3 from '../../accets/images/slider3.webp'
@@ -13,14 +13,30 @@ import { useState } from 'react'
 import Loading from '../../components/LoadingComponent/Loading'
 import { useDebounce } from '../../hooks/useDebounce'
 import { useEffect } from 'react'
-
+import { useSelector, useDispatch } from 'react-redux'
+import { NavLink, createSearchParams, useSearchParams, useParams } from "react-router-dom";
+import { createSlug } from '../../helpers'
+import { apiGetProducts } from '../../api/product'
 const HomePage = () => {
     // const searchProduct = useSelector((state) => state?.product?.search)
     // const searchDebounce = useDebounce(searchProduct, 500)
     const [loading, setLoading] = useState(false)
     const [limit, setLimit] = useState(6)
     const [typeProducts, setTypeProducts] = useState([])
-
+    const [products, setProducts] = useState()
+    const [searchParams] = useSearchParams();
+    const { category } = useParams();
+    const { newCategorys } = useSelector((state) => state.categorys);
+    console.log(category)
+    const fetchProduct = async (params) => {
+        const response = await apiGetProducts()
+        if (response.err === 0) {
+            setProducts(response?.productData)
+        }
+    }
+    useEffect(() => {
+        fetchProduct()
+    }, [])
     // const fetchProductAll = async (context) => {
     //     const limit = context?.queryKey && context?.queryKey[1]
     //     const search = context?.queryKey && context?.queryKey[2]
@@ -49,9 +65,23 @@ const HomePage = () => {
         <Loading isLoading={loading}>
             <div style={{ width: '1270px', margin: '0 auto' }}>
                 <WrapperTypeProduct>
-                    {typeProducts.map((item) => {
+                    <NavLink
+                        key={'/'}
+                        to={'/'}
+                        style={{ paddingBlock: '10px', paddingInline: '10px' }}
+                    >
+                        Tất cả
+                    </NavLink>
+                    {newCategorys?.rows.map((item) => {
                         return (
-                            <TypeProduct name={item} key={item} />
+                            // <TypeProduct name={item} key={item} />
+                            <NavLink
+                                key={createSlug(item.category_name)}
+                                to={createSlug(item.category_name)}
+                                style={{ paddingBlock: '10px', paddingInline: '10px' }}
+                            >
+                                {item.category_name}
+                            </NavLink>
                         )
                     })}
                 </WrapperTypeProduct>
@@ -60,19 +90,23 @@ const HomePage = () => {
                 <div id="container" style={{ height: '1000px', width: '1270px', margin: '0 auto' }}>
                     <SliderComponent arrImages={[slider1, slider2, slider3]} />
                     <WrapperProducts>
-                        <CardComponent
-                        // key={product._id}
-                        // countInStock={product.countInStock}
-                        // description={product.description}
-                        // image={product.image}
-                        // name={product.name}
-                        // price={product.price}
-                        // rating={product.rating}
-                        // type={product.type}
-                        // selled={product.selled}
-                        // discount={product.discount}
-                        // id={p roduct._id}
-                        />
+                        {products?.rows.map((product) => {
+                            return (
+                                <CardComponent
+                                    key={product.id}
+                                    // countInStock={product.countInStock}
+                                    // description={product.description}
+                                    image={`http://localhost:5000/images/${product?.product_image}`}
+                                    name={product.product_name}
+                                    price={product.product_price}
+                                    // rating={product.rating}
+                                    // type={product.type}
+                                    selled={product.product_selled}
+                                    // discount={product.discount}
+                                    id={product.id}
+                                />
+                            )
+                        })}
                     </WrapperProducts>
                     <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
                         <WrapperButtonMore

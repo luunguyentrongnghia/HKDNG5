@@ -18,6 +18,7 @@ import { useEffect } from 'react';
 // import { searchProduct } from '../../redux/slides/productSlide';
 import { getCurrent } from "../../store/user/asyncActions";
 import { logout, clearMessage } from "../../store/user/userSlice";
+import { getNewCategorys } from "../../store/category/asyncActions";
 import Swal from 'sweetalert2';
 const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     const navigate = useNavigate()
@@ -35,6 +36,7 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
         const setTimeoutId = setTimeout(async () => {
             if (isLoggedIn) {
                 dispatch(getCurrent());
+                dispatch(getNewCategorys())
             }
         }, 300);
         return () => {

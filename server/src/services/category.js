@@ -5,6 +5,18 @@ import fs from "fs";
 export const createCategory = (body) =>
   new Promise(async (resolve, reject) => {
     try {
+      const existingCategory = await db.category.findOne({
+        where: {
+          category_name: body.category_name,
+        },
+      });
+      if (existingCategory) {
+        resolve({
+          err: 1,
+          mes: "Danh mục đã tồn tại",
+        });
+        return;
+      }
       const response = await db.category.create({
         ...body,
       });

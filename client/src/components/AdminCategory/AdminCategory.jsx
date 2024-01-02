@@ -244,12 +244,12 @@ const AdminCategory = () => {
 
         }
     })
-    const onUpdateProduct = async () => {
+    const onUpdateCategory = async () => {
         const formData = new FormData();
 
         for (const key in stateCategoryDetails) {
             if (stateCategoryDetails.hasOwnProperty(key)) {
-                if (stateCategory[key] instanceof File) {
+                if (stateCategoryDetails[key] instanceof File) {
                     formData.append(key, stateCategoryDetails[key]);
                 } else {
                     formData.append(key, stateCategoryDetails[key]);
@@ -353,7 +353,7 @@ const AdminCategory = () => {
                         name="form2"
                         labelCol={{ span: 2 }}
                         wrapperCol={{ span: 22 }}
-                        onFinish={onUpdateProduct}
+                        onFinish={onUpdateCategory}
                         autoComplete="on"
                         form={formDrawer}
                     >

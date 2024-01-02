@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import HeaderComponent from '../../components/HeaderCompoent/HeaderCompoent'
 import { getItem } from '../../utils';
 import SellerShopInformation from '../../components/SellerShopInformation/SellerShopInformation'
+import SellerProduct from '../../components/SellerProduct/SellerProduct'
 import { UserOutlined, AppstoreOutlined, ShoppingCartOutlined, CheckCircleOutlined, ShopOutlined } from '@ant-design/icons'
 function SellerPage() {
     const [keySelected, setKeySelected] = useState('');
@@ -26,10 +27,10 @@ function SellerPage() {
             //     return (
             //         <AdminShops />
             //     )
-            // case 'products':
-            //     return (
-            //         <AdminProduct />
-            //     )
+            case 'products':
+                return (
+                    <SellerProduct />
+                )
             // case 'orders':
             //     return (
             //         <OrderAdmin />

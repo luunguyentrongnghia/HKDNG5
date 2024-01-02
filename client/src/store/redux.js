@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 // import productSlice from "./products/productSlice";
 import storage from "redux-persist/lib/storage";
 import userSlice from "./user/userSlice";
+import categorySlice from "./category/categorySlice";
 import {
   FLUSH,
   PAUSE,
@@ -26,7 +27,7 @@ const userConfig = {
 export const store = configureStore({
   reducer: {
     // app: appSlice,
-    // products: productSlice,
+    categorys: categorySlice,
     //persistReducer để tạo một reducer mới cho Redux store Reducer này đã được cấu hình để tự động lưu trạng thái vào lưu trữ và khôi phục nó khi ứng dụng khởi động lại
     user: persistReducer(userConfig, userSlice),
   },
